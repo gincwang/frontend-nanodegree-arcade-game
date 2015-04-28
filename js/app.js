@@ -1,3 +1,7 @@
+var colWidth = 101,
+    rowHeight = 85,
+    rowOffset = 50;
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -7,7 +11,7 @@ var Enemy = function() {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.x = 0;
-    this.y = 0;
+    this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
 }
 
 // Update the enemy's position, required method for game
@@ -49,18 +53,15 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(kb) {
 
     console.log(kb);
-    var offsetY = 50,
-        deltaY = 85,
-        deltaX = 101;
 
-    if (kb === 'up' && this.y > offsetY)
-    { this.y -= deltaY;}
-    else if(kb === 'down' && this.y < offsetY + deltaY*4)
-    { this.y += deltaY;}
+    if (kb === 'up' && this.y > rowOffset)
+    { this.y -= rowHeight;}
+    else if(kb === 'down' && this.y < rowOffset + rowHeight*4)
+    { this.y += rowHeight;}
     else if(kb === 'left' && this.x > 0)
-    { this.x -= deltaX;}
-    else if(kb === 'right' && this.x < deltaX*4)
-    { this.x += deltaX;}
+    { this.x -= colWidth;}
+    else if(kb === 'right' && this.x < colWidth*4)
+    { this.x += colWidth;}
 }
 
 // Now instantiate your objects.
