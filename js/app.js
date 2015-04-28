@@ -1,6 +1,7 @@
 var colWidth = 101,
     rowHeight = 85,
     rowOffset = 50;
+    EnemySpeedMultiplier = 100;
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -12,6 +13,7 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
     this.x = 0;
     this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
+    this.velocity = Math.floor(Math.random()*4 + 1)*EnemySpeedMultiplier;
 }
 
 // Update the enemy's position, required method for game
@@ -20,6 +22,7 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    this.x += dt*this.velocity;
 }
 
 // Draw the enemy on the screen, required method for game
