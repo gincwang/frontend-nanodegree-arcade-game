@@ -87,7 +87,10 @@ Player.prototype.handleInput = function(kb) {
 // Place the player object in a variable called player
 
 var allEnemies = [];
-allEnemies.push(new Enemy());
+for(var i=0; i<5; i++){
+    allEnemies.push(new Enemy());
+}
+
 
 var player = new Player();
 
