@@ -11,9 +11,10 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = 0;
+    this.x = -colWidth;
     this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
     this.velocity = Math.floor(Math.random()*4 + 1)*EnemySpeedMultiplier;
+    this.onScreen = true;
 }
 
 // Update the enemy's position, required method for game
@@ -23,11 +24,25 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += dt*this.velocity;
+    if(this.x > colWidth*5){
+        this.onScreen = false;
+        console.log("object out of screen");
+        this.reset();
+    }
 }
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+
+Enemy.prototype.reset = function() {
+
+    this.x = -colWidth;
+    this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
+    this.velocity = Math.floor(Math.random()*4 + 1)*EnemySpeedMultiplier;
+    this.onScreen = true;
 }
 
 // Now write your own player class
@@ -37,8 +52,8 @@ Enemy.prototype.render = function() {
 var Player = function() {
 
     this.sprite = 'images/char-boy.png';
-    this.x = 2 * 101;
-    this.y = 50 + 85 * 4;
+    this.x = colWidth*2;
+    this.y = rowOffset + rowHeight*4;
 
 }
 
