@@ -1,7 +1,8 @@
 var colWidth = 101,
     rowHeight = 85,
-    rowOffset = 50;
-    EnemySpeedMultiplier = 100;
+    rowOffset = 50,
+    EnemySpeedMultiplier = 100,
+    numOfEnemies = 3;
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -15,6 +16,10 @@ var Enemy = function() {
     this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
     this.velocity = Math.floor(Math.random()*4 + 1)*EnemySpeedMultiplier;
     this.onScreen = true;
+
+    //public getter
+    this.getX = function(){return this.x};
+    this.getY = function(){return this.y};
 }
 
 // Update the enemy's position, required method for game
@@ -26,7 +31,7 @@ Enemy.prototype.update = function(dt) {
     this.x += dt*this.velocity;
     if(this.x > colWidth*5){
         this.onScreen = false;
-        console.log("object out of screen");
+        //console.log("object out of screen");
         this.reset();
     }
 }
@@ -54,12 +59,17 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.x = colWidth*2;
     this.y = rowOffset + rowHeight*4;
+    //this.isHit = false;
 
+    this.getX = function(){ return this.x};
+    this.getY = function(){ return this.y};
+    this.setX = function(x){this.x = x};
+    this.setY = function(y){this.y = y};
 }
 
 
 Player.prototype.update = function(dt) {
-
+    checkCollision();
 
 }
 
@@ -87,7 +97,7 @@ Player.prototype.handleInput = function(kb) {
 // Place the player object in a variable called player
 
 var allEnemies = [];
-for(var i=0; i<5; i++){
+for(var i=0; i<numOfEnemies; i++){
     allEnemies.push(new Enemy());
 }
 
@@ -106,3 +116,29 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+//This function is called after Enemy has updated its position, and
+//called within Player.prototype.update()
+//Checks player radius vs Enemy radius for any overlap
+function checkCollision(){
+    var enemyWidthMin,
+        enemyWidthMax,
+        playerWidthMin,
+        playerWidthMax;
+
+    allEnemies.forEach(function(enemy){
+        if(enemy.getY() === player.getY()){
+            enemyWidthMin = enemy.getX() - colWidth/3,
+            enemyWidthMax = enemy.getX() + colWidth/3,
+            playerWidthMin = player.getX() - colWidth/3,
+            playerWidthMax = player.getX() + colWidth/3;
+
+            if((playerWidthMin > enemyWidthMin && playerWidthMin < enemyWidthMax) ||
+                (playerWidthMax > enemyWidthMin && playerWidthMax < enemyWidthMax)){
+                    //player.isHit = true;
+                    player.setY(rowOffset + rowHeight*4);
+                }
+
+        }
+    })
+}
