@@ -194,3 +194,16 @@ function checkCollisions(){
     })
     return isHit;
 }
+
+
+//Gems our players collect
+var Gem = function(){
+
+    var gemColors = [blue, green, orange];
+
+    this.x = Math.floor(Math.random()*5)*colWidth;
+    this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
+    this.color = gemColors[Math.floor(Math.random()*3)];
+    
+
+}
