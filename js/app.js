@@ -135,6 +135,30 @@ Player.prototype.handleInput = function(kb) {
         }
 }
 
+
+//Gems our players can collect by walking on top of it
+var Gem = function(){
+
+    var gemColors = ["Blue", "Green", "Orange"];
+
+    this.x = Math.floor(Math.random()*5)*colWidth;
+    this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
+    this.color = gemColors[Math.floor(Math.random()*3)];
+    this.sprite = 'images/Gem' + ' ' + this.color + ".png";
+
+    console.log(this.x, this.y);
+
+}
+
+Gem.prototype.render = function(){
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+Gem.prototype.update = function(){
+
+}
+
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -146,6 +170,9 @@ for(var i=0; i<numOfEnemies; i++){
 
 
 var player = new Player();
+
+var gem = new Gem();
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -193,17 +220,4 @@ function checkCollisions(){
 
     })
     return isHit;
-}
-
-
-//Gems our players collect
-var Gem = function(){
-
-    var gemColors = [blue, green, orange];
-
-    this.x = Math.floor(Math.random()*5)*colWidth;
-    this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
-    this.color = gemColors[Math.floor(Math.random()*3)];
-    
-
 }
