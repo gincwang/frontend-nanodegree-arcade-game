@@ -21,10 +21,15 @@ var Engine = (function(global) {
      */
     var doc = global.document,
         win = global.window,
+        score = doc.getElementById('score').textContent,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
 
+    console.log(score);
+    score = "Score: 10";
+    console.log(score);
+    doc.getElementById('score').textContent = "Score: 20";
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
@@ -80,7 +85,10 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        if(checkCollisions()){
+            console.log("hit!");
+        }
+
     }
 
     /* This is called by the update function  and loops through all of the
