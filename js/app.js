@@ -16,6 +16,7 @@ var Enemy = function() {
     this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
     this.velocity = Math.floor(Math.random()*4 + 1)*EnemySpeedMultiplier;
     this.onScreen = true;
+    this.isWaiting = false;
 
     //public getter
     this.getX = function(){return this.x};
@@ -29,10 +30,16 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += dt*this.velocity;
-    if(this.x > colWidth*5){
-        this.onScreen = false;
+    //enemies will continue to recycle themselves within
+    //the level if player hasn't been hit. If player's
+    //hit, then the game will pause the enemies
+    if(this.x > colWidth*5 && player.isHit === false){
         //console.log("object out of screen");
         this.reset();
+    }
+    else if(this.x > colWidth*5 && player.isHit === true){
+        //console.log("object out of screen");
+        this.waitOffScreen();
     }
 }
 
@@ -47,8 +54,22 @@ Enemy.prototype.reset = function() {
     this.x = -colWidth;
     this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
     this.velocity = Math.floor(Math.random()*4 + 1)*EnemySpeedMultiplier;
-    this.onScreen = true;
+    this.isWaiting = false;
 }
+
+//enemies wait off screen in between actual gameplay
+Enemy.prototype.waitOffScreen = function() {
+    this.x = -colWidth;
+    this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
+    this.velocity = 0;
+    this.isWaiting = true;
+}
+
+Enemy.prototype.stopWaiting = function() {
+    this.velocity = Math.floor(Math.random()*4 + 1)*EnemySpeedMultiplier;
+    this.isWaiting = false;
+}
+
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -59,7 +80,7 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.x = colWidth*2;
     this.y = rowOffset + rowHeight*4;
-    //this.isHit = false;
+    this.isHit = false;
 
     this.getX = function(){ return this.x};
     this.getY = function(){ return this.y};
@@ -69,7 +90,6 @@ var Player = function() {
 
 
 Player.prototype.update = function(dt) {
-    checkCollision();
 
 }
 
@@ -82,14 +102,37 @@ Player.prototype.handleInput = function(kb) {
 
     console.log(kb);
 
-    if (kb === 'up' && this.y > rowOffset)
-    { this.y -= rowHeight;}
-    else if(kb === 'down' && this.y < rowOffset + rowHeight*4)
-    { this.y += rowHeight;}
-    else if(kb === 'left' && this.x > 0)
-    { this.x -= colWidth;}
-    else if(kb === 'right' && this.x < colWidth*4)
-    { this.x += colWidth;}
+    //Only when all the enemies go off screen do we allow
+    //the player to reactivate game by pressing space bar
+    var isEnemyWaiting = 0;
+    allEnemies.forEach(function(enemy){
+        if(enemy.velocity === 0)
+            isEnemyWaiting++;
+    });
+    if(isEnemyWaiting === allEnemies.length){
+        if (kb === 'space'){
+            allEnemies.forEach(function(enemy){
+                enemy.stopWaiting();
+                player.isHit = false;
+            })
+        }
+
+    }
+    else {
+            //once the player is hit we don't let the player move
+            if(!player.isHit){
+
+                if (kb === 'up' && this.y > rowOffset-rowHeight)
+                { this.y -= rowHeight;}
+                else if(kb === 'down' && this.y < rowOffset + rowHeight*4)
+                { this.y += rowHeight;}
+                else if(kb === 'left' && this.x > 0)
+                { this.x -= colWidth;}
+                else if(kb === 'right' && this.x < colWidth*4)
+                { this.x += colWidth;}
+                console.log(this.y, this.x);
+            }
+        }
 }
 
 // Now instantiate your objects.
@@ -108,6 +151,8 @@ var player = new Player();
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
+        13: 'enter',
+        32: 'space',
         37: 'left',
         38: 'up',
         39: 'right',
@@ -120,25 +165,32 @@ document.addEventListener('keyup', function(e) {
 //This function is called after Enemy has updated its position, and
 //called within Player.prototype.update()
 //Checks player radius vs Enemy radius for any overlap
-function checkCollision(){
+function checkCollisions(){
     var enemyWidthMin,
         enemyWidthMax,
         playerWidthMin,
         playerWidthMax;
+    var isHit = false;
 
     allEnemies.forEach(function(enemy){
+
+        //check if enemy&player are in the same row
         if(enemy.getY() === player.getY()){
             enemyWidthMin = enemy.getX() - colWidth/3,
             enemyWidthMax = enemy.getX() + colWidth/3,
             playerWidthMin = player.getX() - colWidth/3,
             playerWidthMax = player.getX() + colWidth/3;
-
+            //check if player's width margin is within enemy's width margin
             if((playerWidthMin > enemyWidthMin && playerWidthMin < enemyWidthMax) ||
                 (playerWidthMax > enemyWidthMin && playerWidthMax < enemyWidthMax)){
-                    //player.isHit = true;
+                    //collision found! Drop user back to the bottom row
+                    player.isHit = true;
                     player.setY(rowOffset + rowHeight*4);
+                    isHit = true;
                 }
 
         }
+
     })
+    return isHit;
 }
