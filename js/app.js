@@ -2,8 +2,9 @@
 var colWidth = 101,
     rowHeight = 85,
     rowOffset = 50,
-    EnemySpeedMultiplier = 30,
-    numOfEnemies = 3
+    enemySpeedMultiplier = 30,
+    textSpeed = 400,
+    numOfEnemies = 3,
     gemScore = 0;
 
 // Enemies our player must avoid
@@ -16,7 +17,7 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
     this.x = -colWidth;
     this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
-    this.velocity = Math.floor(Math.random()*3 + 3)*EnemySpeedMultiplier;
+    this.velocity = Math.floor(Math.random()*3 + 3)*enemySpeedMultiplier;
     this.onScreen = true;
     this.isWaiting = false;
 
@@ -55,7 +56,7 @@ Enemy.prototype.reset = function() {
 
     this.x = -colWidth;
     this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
-    this.velocity = Math.floor(Math.random()*3 + 3)*EnemySpeedMultiplier;
+    this.velocity = Math.floor(Math.random()*3 + 3)*enemySpeedMultiplier;
     this.isWaiting = false;
 }
 
@@ -68,7 +69,7 @@ Enemy.prototype.waitOffScreen = function() {
 }
 
 Enemy.prototype.stopWaiting = function() {
-    this.velocity = Math.floor(Math.random()*3 + 3)*EnemySpeedMultiplier;
+    this.velocity = Math.floor(Math.random()*3 + 3)*enemySpeedMultiplier;
     this.isWaiting = false;
 }
 
@@ -181,6 +182,43 @@ Gem.prototype.update = function(){
 }
 
 
+var GameText = function(text){
+
+    this.text = text;
+    this.x = -colWidth*6;
+    this.y = rowOffset+rowHeight*5;
+    this.velocity = 0;
+
+}
+
+GameText.prototype.render = function(){
+    ctx.save();
+    ctx.rotate(-Math.PI/6);
+    ctx.font = "75px serif";
+    ctx.fillStyle = "yellow";
+    ctx.fillText(this.text, this.x , this.y );
+    ctx.strokeStyle = "black";
+    ctx.strokeText(this.text, this.x , this.y );
+    ctx.restore();
+}
+
+GameText.prototype.update = function(dt){
+    this.x += dt*this.velocity;
+    if(this.x >= colWidth*5 && this.y >= rowOffset+ rowHeight*5){
+        this.reset();
+    }
+}
+
+GameText.prototype.reset = function(){
+    this.velocity = 0;
+    this.x = -colWidth*6;
+    this.y = rowOffset+rowHeight*5;
+}
+
+GameText.prototype.begin = function(){
+    this.velocity = textSpeed;
+}
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -194,7 +232,7 @@ for(var i=0; i<numOfEnemies; i++){
 var player = new Player();
 
 var gem = new Gem();
-
+var hitText = new GameText("Player Hit!");
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -235,6 +273,7 @@ function checkCollisions(){
                 (playerWidthMax > enemyWidthMin && playerWidthMax < enemyWidthMax)){
                     //collision found! Drop user back to the bottom row
                     player.isHit = true;
+                    hitText.begin();
                     isHit = true;
                     player.reset();
                 }
@@ -251,9 +290,6 @@ function checkGemCollisions(){
         gem = new Gem();
         updateGameStats();
     }
-
-
-
     return isHit;
 }
 
@@ -264,13 +300,13 @@ function updateGameStats(){
     console.log("points:"+ gemScore);
     if(gemScore < 5){
         console.log("easy mode")
-        EnemySpeedMultiplier += 5;
+        enemySpeedMultiplier += 5;
     }else if(gemScore >= 5 && gemScore < 10){
         console.log("normal mode")
-        EnemySpeedMultiplier += 2;
+        enemySpeedMultiplier += 2;
     }else if(gemScore >=10 && gemScore < 15){
         console.log("hard mode");
-        EnemySpeedMultiplier += 2;
+        enemySpeedMultiplier += 2;
         if(gemScore === 10){
             allEnemies.push(new Enemy());
         }
