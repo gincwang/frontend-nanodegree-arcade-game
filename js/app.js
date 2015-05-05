@@ -2,7 +2,8 @@ var colWidth = 101,
     rowHeight = 85,
     rowOffset = 50,
     EnemySpeedMultiplier = 100,
-    numOfEnemies = 3;
+    numOfEnemies = 3
+    gemScore = 0;
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -130,7 +131,7 @@ Player.prototype.handleInput = function(kb) {
                 { this.x -= colWidth;}
                 else if(kb === 'right' && this.x < colWidth*4)
                 { this.x += colWidth;}
-                console.log(this.y, this.x);
+                console.log(this.x, this.y);
             }
         }
 }
@@ -139,14 +140,27 @@ Player.prototype.handleInput = function(kb) {
 //Gems our players can collect by walking on top of it
 var Gem = function(){
 
-    var gemColors = ["Blue", "Green", "Orange"];
+    var gemColors = ["Blue", "Green", "Orange"],
+        tempX = Math.floor(Math.random()*5)*colWidth,
+        tempY = Math.floor(Math.random()*5)*rowHeight + rowOffset;
 
-    this.x = Math.floor(Math.random()*5)*colWidth;
-    this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
+    //Make sure new gem doesn't spawn on top of player
+    while(tempX === player.getX() && tempY === player.getY()){
+        tempX = Math.floor(Math.random()*5)*colWidth;
+        tempY = Math.floor(Math.random()*5)*rowHeight + rowOffset;
+    }
+    this.x = tempX;
+    this.y = tempY;
     this.color = gemColors[Math.floor(Math.random()*3)];
     this.sprite = 'images/Gem' + ' ' + this.color + ".png";
+    this.isHit = false;
 
-    console.log(this.x, this.y);
+    console.log("gem:" + this.x, this.y);
+
+    this.getX = function(){ return this.x};
+    this.getY = function(){ return this.y};
+    this.setX = function(x){this.x = x};
+    this.setY = function(y){this.y = y};
 
 }
 
@@ -189,7 +203,7 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
-//This function is called after Enemy has updated its position, and
+//This function is called after Enemy and Player have updated their positions
 //called within Player.prototype.update()
 //Checks player radius vs Enemy radius for any overlap
 function checkCollisions(){
@@ -197,6 +211,7 @@ function checkCollisions(){
         enemyWidthMax,
         playerWidthMin,
         playerWidthMax;
+
     var isHit = false;
 
     allEnemies.forEach(function(enemy){
@@ -215,9 +230,17 @@ function checkCollisions(){
                     player.setY(rowOffset + rowHeight*4);
                     isHit = true;
                 }
-
         }
-
     })
+    return isHit;
+}
+
+//This function will let Player score gem points when colliding with it
+function checkGemCollisions(){
+    var isHit = false;
+    if(gem.getY() === player.getY() && gem.getX() === player.getX()){
+        isHit = true;
+    }
+
     return isHit;
 }

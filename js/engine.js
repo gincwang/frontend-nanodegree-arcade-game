@@ -29,7 +29,7 @@ var Engine = (function(global) {
     console.log(score);
     score = "Score: 10";
     console.log(score);
-    doc.getElementById('score').textContent = "Score: 20";
+    doc.getElementById('score').textContent = "Score: 0";
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
@@ -87,6 +87,9 @@ var Engine = (function(global) {
         updateEntities(dt);
         if(checkCollisions()){
             console.log("hit!");
+        }
+        if(checkGemCollisions()){
+            console.log("Scored Gem!");
         }
 
     }
