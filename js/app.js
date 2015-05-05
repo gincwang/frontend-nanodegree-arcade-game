@@ -1,7 +1,8 @@
+//Game variables
 var colWidth = 101,
     rowHeight = 85,
     rowOffset = 50,
-    EnemySpeedMultiplier = 100,
+    EnemySpeedMultiplier = 30,
     numOfEnemies = 3
     gemScore = 0;
 
@@ -15,7 +16,7 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
     this.x = -colWidth;
     this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
-    this.velocity = Math.floor(Math.random()*4 + 1)*EnemySpeedMultiplier;
+    this.velocity = Math.floor(Math.random()*3 + 3)*EnemySpeedMultiplier;
     this.onScreen = true;
     this.isWaiting = false;
 
@@ -49,12 +50,12 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-
+//When enemy goes off screen, prep it to be reused
 Enemy.prototype.reset = function() {
 
     this.x = -colWidth;
     this.y = Math.floor(Math.random()*5)*rowHeight + rowOffset;
-    this.velocity = Math.floor(Math.random()*4 + 1)*EnemySpeedMultiplier;
+    this.velocity = Math.floor(Math.random()*3 + 3)*EnemySpeedMultiplier;
     this.isWaiting = false;
 }
 
@@ -67,7 +68,7 @@ Enemy.prototype.waitOffScreen = function() {
 }
 
 Enemy.prototype.stopWaiting = function() {
-    this.velocity = Math.floor(Math.random()*4 + 1)*EnemySpeedMultiplier;
+    this.velocity = Math.floor(Math.random()*3 + 3)*EnemySpeedMultiplier;
     this.isWaiting = false;
 }
 
@@ -94,14 +95,13 @@ Player.prototype.update = function(dt) {
 
 }
 
-
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
 Player.prototype.handleInput = function(kb) {
 
-    console.log(kb);
+    //console.log(kb);
 
     //Only when all the enemies go off screen do we allow
     //the player to reactivate game by pressing space bar
@@ -123,7 +123,7 @@ Player.prototype.handleInput = function(kb) {
             //once the player is hit we don't let the player move
             if(!player.isHit){
 
-                if (kb === 'up' && this.y > rowOffset-rowHeight)
+                if (kb === 'up' && this.y > rowOffset)
                 { this.y -= rowHeight;}
                 else if(kb === 'down' && this.y < rowOffset + rowHeight*4)
                 { this.y += rowHeight;}
@@ -131,11 +131,18 @@ Player.prototype.handleInput = function(kb) {
                 { this.x -= colWidth;}
                 else if(kb === 'right' && this.x < colWidth*4)
                 { this.x += colWidth;}
-                console.log(this.x, this.y);
+                //console.log(this.x, this.y);
             }
         }
 }
 
+//This function is called when player gets hit, resets to original position
+Player.prototype.reset = function(){
+
+    player.setX(colWidth*2);
+    player.setY(rowOffset + rowHeight*4);
+
+}
 
 //Gems our players can collect by walking on top of it
 var Gem = function(){
@@ -144,8 +151,10 @@ var Gem = function(){
         tempX = Math.floor(Math.random()*5)*colWidth,
         tempY = Math.floor(Math.random()*5)*rowHeight + rowOffset;
 
-    //Make sure new gem doesn't spawn on top of player
-    while(tempX === player.getX() && tempY === player.getY()){
+    //Make sure new gem doesn't spawn on top of player NOR spawn at
+    //default player spawn point
+    while((tempX === player.getX() && tempY === player.getY()) ||
+            (tempX === colWidth*2 && tempY === rowOffset + rowHeight*4)){
         tempX = Math.floor(Math.random()*5)*colWidth;
         tempY = Math.floor(Math.random()*5)*rowHeight + rowOffset;
     }
@@ -153,7 +162,6 @@ var Gem = function(){
     this.y = tempY;
     this.color = gemColors[Math.floor(Math.random()*3)];
     this.sprite = 'images/Gem' + ' ' + this.color + ".png";
-    this.isHit = false;
 
     console.log("gem:" + this.x, this.y);
 
@@ -227,8 +235,8 @@ function checkCollisions(){
                 (playerWidthMax > enemyWidthMin && playerWidthMax < enemyWidthMax)){
                     //collision found! Drop user back to the bottom row
                     player.isHit = true;
-                    player.setY(rowOffset + rowHeight*4);
                     isHit = true;
+                    player.reset();
                 }
         }
     })
@@ -240,7 +248,35 @@ function checkGemCollisions(){
     var isHit = false;
     if(gem.getY() === player.getY() && gem.getX() === player.getX()){
         isHit = true;
+        gem = new Gem();
+        updateGameStats();
     }
 
+
+
     return isHit;
+}
+
+//This game will increase increase game high score, as well as adjust
+//game difficulty depending on the current score
+function updateGameStats(){
+    gemScore++;
+    console.log("points:"+ gemScore);
+    if(gemScore < 5){
+        console.log("easy mode")
+        EnemySpeedMultiplier += 5;
+    }else if(gemScore >= 5 && gemScore < 10){
+        console.log("normal mode")
+        EnemySpeedMultiplier += 2;
+    }else if(gemScore >=10 && gemScore < 15){
+        console.log("hard mode");
+        EnemySpeedMultiplier += 2;
+        if(gemScore === 10){
+            allEnemies.push(new Enemy());
+        }
+    }else if(gemScore >=15 && gemScore < 20){
+        if(gemScore === 15){
+            allEnemies.push(new Enemy());
+        }
+    }
 }
