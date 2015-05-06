@@ -5,7 +5,8 @@ var colWidth = 101,
     enemySpeedMultiplier = 30,
     textSpeed = 400,
     numOfEnemies = 3,
-    gemScore = 0;
+    gemScore = 0,
+    gameState = ["menu", "start", "end"];
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -192,14 +193,18 @@ var GameText = function(text){
 }
 
 GameText.prototype.render = function(){
-    ctx.save();
-    ctx.rotate(-Math.PI/6);
-    ctx.font = "75px serif";
-    ctx.fillStyle = "yellow";
-    ctx.fillText(this.text, this.x , this.y );
-    ctx.strokeStyle = "black";
-    ctx.strokeText(this.text, this.x , this.y );
-    ctx.restore();
+    if(this.text === "Player Hit!"){
+        ctx.save();
+        ctx.rotate(-Math.PI/6);
+        ctx.font = "75px serif";
+        ctx.fillStyle = "yellow";
+        ctx.fillText(this.text, this.x , this.y );
+        ctx.strokeStyle = "black";
+        ctx.strokeText(this.text, this.x , this.y );
+        ctx.restore();
+    }else if(this.text === "Game Over"){
+        console.log("game over");
+    }
 }
 
 GameText.prototype.update = function(dt){
@@ -293,7 +298,7 @@ function checkGemCollisions(){
     return isHit;
 }
 
-//This game will increase increase game high score, as well as adjust
+//This game will increase game score, as well as adjust
 //game difficulty depending on the current score
 function updateGameStats(){
     gemScore++;
