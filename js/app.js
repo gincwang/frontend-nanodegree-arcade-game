@@ -246,6 +246,21 @@ MenuSelector.prototype.update = function(){
 
 }
 
+MenuSelector.prototype.handleInput = function(kb){
+    console.log(kb);
+    if(kb === "left"){
+        if(this.x >= colWidth){
+            this.x -= colWidth;
+        }
+    }else if(kb === "right"){
+        if(this.x < colWidth*4){
+            this.x += colWidth;
+        }
+    }else if(kb === "space"){
+        gameState === "start";
+    }
+
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -259,9 +274,7 @@ for(var i=0; i<numOfEnemies; i++){
     allEnemies.push(new Enemy());
 }
 
-
 var player = new Player();
-
 var gem = new Gem();
 var hitText = new GameText("Player Hit!");
 
@@ -277,7 +290,12 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+    if(gameState === "menu"){
+        menuSelector.handleInput(allowedKeys[e.keyCode]);
+    }
+    if(gameState === "start"){
+        player.handleInput(allowedKeys[e.keyCode]);
+    }
 });
 
 //This function is called after Enemy and Player have updated their positions
