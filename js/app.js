@@ -257,7 +257,7 @@ MenuSelector.prototype.handleInput = function(kb){
             this.x += colWidth;
         }
     }else if(kb === "space"){
-        gameState === "start";
+        gameState = "start";
     }
 
 }
