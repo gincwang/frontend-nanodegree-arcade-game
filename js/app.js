@@ -224,9 +224,35 @@ GameText.prototype.begin = function(){
     this.velocity = textSpeed;
 }
 
+//MenuSelector displays the current selected playable character in the menu
+var MenuSelector = function(){
+
+    this.sprite = 'images/Selector.png';
+    this.x = colWidth*2;
+    this.y = rowOffset + rowHeight*4;
+
+    this.getX = function(){return this.x;};
+    this.getY = function(){return this.y;};
+    this.setX = function(x){this.x = x;};
+    this.setY = function(y){this.y = y;};
+
+}
+
+MenuSelector.prototype.render = function(){
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+MenuSelector.prototype.update = function(){
+
+}
+
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+var menuSelector = new MenuSelector();
+
+
 
 var allEnemies = [];
 for(var i=0; i<numOfEnemies; i++){

@@ -210,8 +210,14 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
+
+        renderMenuEntities();
     }
 
+    function renderMenuEntities(){
+
+        menuSelector.render();
+    }
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
      * all of these images are properly loaded our game will start.
@@ -228,7 +234,8 @@ var Engine = (function(global) {
         'images/char-princess-girl.png',
         'images/Gem Blue.png',
         'images/Gem Green.png',
-        'images/Gem Orange.png'
+        'images/Gem Orange.png',
+        'images/Selector.png'
     ]);
     Resources.onReady(init);
 
