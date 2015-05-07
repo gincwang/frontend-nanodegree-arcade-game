@@ -6,7 +6,7 @@ var colWidth = 101,
     textSpeed = 400,
     numOfEnemies = 3,
     gemScore = 0,
-    gameState = ["menu", "start", "end"];
+    gameState = "menu"; //"menu", "start", "end";
 
 // Enemies our player must avoid
 var Enemy = function() {

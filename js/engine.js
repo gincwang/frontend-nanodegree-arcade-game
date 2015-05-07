@@ -180,7 +180,6 @@ var Engine = (function(global) {
             win.requestAnimationFrame(reset);
         }else if(gameState === "start"){
             lastTime = Date.now();
-            main();
             win.requestAnimationFrame(main);
         }
     }
@@ -229,7 +228,7 @@ var Engine = (function(global) {
         'images/char-princess-girl.png',
         'images/Gem Blue.png',
         'images/Gem Green.png',
-        'images/Gem Orange.png';
+        'images/Gem Orange.png'
     ]);
     Resources.onReady(init);
 
