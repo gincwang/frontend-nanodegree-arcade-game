@@ -79,9 +79,17 @@ Enemy.prototype.stopWaiting = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
-var Player = function() {
+var Player = function(index) {
 
-    this.sprite = 'images/char-boy.png';
+    var allChar = [
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-boy.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
+    ];
+
+    this.sprite = allChar[index];
     this.x = colWidth*2;
     this.y = rowOffset + rowHeight*4;
     this.isHit = false;
@@ -140,11 +148,12 @@ Player.prototype.handleInput = function(kb) {
 
 //This function is called when player gets hit, resets to original position
 Player.prototype.reset = function(){
-
     player.setX(colWidth*2);
     player.setY(rowOffset + rowHeight*4);
 
 }
+
+
 
 //Gems our players can collect by walking on top of it
 var Gem = function(){
@@ -256,8 +265,17 @@ MenuSelector.prototype.handleInput = function(kb){
         if(this.x < colWidth*4){
             this.x += colWidth;
         }
-    }else if(kb === "space"){
+    }//Initialize main game level objects
+    else if(kb === "space"){
         gameState = "start";
+        //objects
+        player = new Player(Math.floor(this.x/colWidth));
+        gem = new Gem();
+        hitText = new GameText("Player Hit!");
+        allEnemies = [];
+        for(var i=0; i<numOfEnemies; i++){
+            allEnemies.push(new Enemy());
+        }
     }
 
 }
@@ -266,17 +284,11 @@ MenuSelector.prototype.handleInput = function(kb){
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var menuSelector = new MenuSelector();
-
-
-
+var player;
+var gem;
 var allEnemies = [];
-for(var i=0; i<numOfEnemies; i++){
-    allEnemies.push(new Enemy());
-}
+var hitText;
 
-var player = new Player();
-var gem = new Gem();
-var hitText = new GameText("Player Hit!");
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
