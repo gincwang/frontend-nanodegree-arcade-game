@@ -8,7 +8,11 @@ var colWidth = 101,
     gemScore = 0,
     gameState = "menu"; //"menu", "start", "end";
 
-// Enemies our player must avoid
+
+////////////////////////
+// Enemy class //////////////////////
+// Enemies our player must avoid ////
+/////////////////////////////////////
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -75,10 +79,11 @@ Enemy.prototype.stopWaiting = function() {
 }
 
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
+////////////////////////
+//// Player class ////////////////////////////////////////////////////
+//// you can control player by moving it across the canvas and ///////
+//// interact with the environment in various ways ///////////////////
+//////////////////////////////////////////////////////////////////////
 var Player = function(index) {
 
     var allChar = [
@@ -93,6 +98,7 @@ var Player = function(index) {
     this.x = colWidth*2;
     this.y = rowOffset + rowHeight*4;
     this.isHit = false;
+    this.lives = 3; //player has 3 lives to begin with
 
     this.getX = function(){ return this.x};
     this.getY = function(){ return this.y};
@@ -102,7 +108,7 @@ var Player = function(index) {
 
 
 Player.prototype.update = function(dt) {
-
+    //hmmmm..
 }
 
 Player.prototype.render = function() {
@@ -153,9 +159,10 @@ Player.prototype.reset = function(){
 
 }
 
-
-
-//Gems our players can collect by walking on top of it
+///////////////////
+//// Gem Class ///////////////////////////////////////////
+//// player can score Gems by walking on top of it ///////
+//////////////////////////////////////////////////////////
 var Gem = function(){
 
     var gemColors = ["Blue", "Green", "Orange"],
@@ -191,7 +198,10 @@ Gem.prototype.update = function(){
 
 }
 
-
+///////////////////////////
+//// GameText class /////////////////////////////////////////////////
+//// Shows various text across canvas with different animation //////
+/////////////////////////////////////////////////////////////////////
 var GameText = function(text){
 
     this.text = text;
@@ -233,7 +243,11 @@ GameText.prototype.begin = function(){
     this.velocity = textSpeed;
 }
 
-//MenuSelector displays the current selected playable character in the menu
+
+/////////////////////////////
+//// MenuSelector class //////////////////////////////////////////////////////
+//MenuSelector displays the current selected playable character in the menu //
+//////////////////////////////////////////////////////////////////////////////
 var MenuSelector = function(){
 
     this.sprite = 'images/Selector.png';
@@ -280,14 +294,21 @@ MenuSelector.prototype.handleInput = function(kb){
 
 }
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+
+// Instantiate game object by going into menu first!
 var menuSelector = new MenuSelector();
+
+//These variables will be initailized as objects when game starts
 var player;
 var gem;
 var allEnemies = [];
 var hitText;
+
+
+
+
+
+///////Additional helper functions /////////
 
 
 // This listens for key presses and sends the keys to your
