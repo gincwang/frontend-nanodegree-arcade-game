@@ -212,11 +212,25 @@ var Engine = (function(global) {
         }
 
         renderMenuEntities();
+
     }
 
     function renderMenuEntities(){
-
         menuSelector.render();
+        renderAllCharacters();
+    }
+    //this function prints out all the playable characters
+    function renderAllCharacters(){
+        var allChar = [
+            'images/char-cat-girl.png',
+            'images/char-horn-girl.png',
+            'images/char-boy.png',
+            'images/char-pink-girl.png',
+            'images/char-princess-girl.png',
+        ];
+        for(col = 0; col < allChar.length; col++){
+            ctx.drawImage(Resources.get(allChar[col]), col*colWidth, rowOffset+rowHeight*4 );
+        }
     }
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
