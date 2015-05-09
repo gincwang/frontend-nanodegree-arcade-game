@@ -99,6 +99,7 @@ var Player = function(index) {
     this.y = rowOffset + rowHeight*4;
     this.isHit = false;
     this.lives = 3; //player has 3 lives to begin with
+    this.lifeSprite = 'images/Heart.png'
 
     this.getX = function(){ return this.x};
     this.getY = function(){ return this.y};
@@ -113,6 +114,17 @@ Player.prototype.update = function(dt) {
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+
+    //draw a filler white rect, since there's some empty spot at the
+    //top of the canvas, so when heart is no longer drawn
+    //there won't be left-over image from before
+    ctx.fillStyle = "white";
+    ctx.fillRect(0,0,ctx.canvas.clientWidth, rowOffset);
+    console.log(ctx.canvas.clientWidth);
+
+    for(i=0; i<this.lives; i++){
+        ctx.drawImage(Resources.get(this.lifeSprite),colWidth*i,-30);
+    }
 }
 
 Player.prototype.handleInput = function(kb) {
@@ -354,10 +366,14 @@ function checkCollisions(){
             if((playerWidthMin > enemyWidthMin && playerWidthMin < enemyWidthMax) ||
                 (playerWidthMax > enemyWidthMin && playerWidthMax < enemyWidthMax)){
                     //collision found! Drop user back to the bottom row
-                    player.isHit = true;
-                    hitText.begin();
-                    isHit = true;
-                    player.reset();
+                    if(!player.isHit){
+                            player.isHit = true;
+                            hitText.begin();
+                            isHit = true;
+                            player.reset();
+                            player.lives--;
+                            console.log("player lives left: " + player.lives);
+                        }
                 }
         }
     })
