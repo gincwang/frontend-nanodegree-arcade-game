@@ -21,14 +21,11 @@ var Engine = (function(global) {
      */
     var doc = global.document,
         win = global.window,
-        score = doc.getElementById('score').textContent,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    console.log(score);
-    score = "Score: 10";
-    console.log(score);
+
     doc.getElementById('score').textContent = "Score: 0";
     canvas.width = 505;
     canvas.height = 606;
@@ -88,7 +85,9 @@ var Engine = (function(global) {
             console.log("hit!");
         }
         if(checkGemCollisions()){
+            //Player scored! trigger update to game score
             console.log("Scored Gem!");
+            doc.getElementById('score').textContent = "Score: " + gemScore;
         }
 
     }

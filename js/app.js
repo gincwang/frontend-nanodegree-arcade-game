@@ -375,7 +375,7 @@ function checkGemCollisions(){
     return isHit;
 }
 
-//This game will increase game score, as well as adjust
+//This function will increase game score, as well as adjust
 //game difficulty depending on the current score
 function updateGameStats(){
     gemScore++;
