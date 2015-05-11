@@ -232,6 +232,7 @@ var Engine = (function(global) {
     function renderMenuEntities(){
         menuSelector.render();
         renderAllCharacters();
+        gameTitleText.render();
     }
     //this function prints out all the playable characters
     function renderAllCharacters(){

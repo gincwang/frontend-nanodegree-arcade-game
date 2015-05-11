@@ -231,8 +231,13 @@ var GameText = function(text){
         this.x = colWidth-20;
         this.y = - rowOffset - rowHeight;
         this.velocity = 0;
-
-    }else {
+    }
+    else if(text === "Gem Madness"){
+        this.x = 40;
+        this.y = rowOffset + rowHeight*3;
+        this.velocity = 0;
+    }
+    else {
         this.x = 0;
         this.y = 0;
         this.velocity =0;
@@ -258,7 +263,14 @@ GameText.prototype.render = function(){
         ctx.strokeStyle = "red";
         ctx.strokeText(this.text, this.x , this.y );
         ctx.restore();
-        console.log("gg text: "+ this.x + " and " + this.y)
+    }else if(this.text === "Gem Madness"){
+        ctx.save();
+        ctx.font = "75px serif";
+        ctx.fillStyle = "orange";
+        ctx.fillText(this.text, this.x , this.y );
+        ctx.strokeStyle = "black";
+        ctx.strokeText(this.text, this.x , this.y );
+        ctx.restore();
     }
 }
 
@@ -341,7 +353,7 @@ MenuSelector.prototype.handleInput = function(kb){
 
 // Instantiate game object by going into menu first!
 var menuSelector = new MenuSelector();
-
+var gameTitleText = new GameText("Gem Madness");
 //These variables will be initailized as objects when game starts
 var player;
 var gem;
@@ -456,6 +468,7 @@ function updateGameStats(){
 
 function gameReset(){
     menuSelector = new MenuSelector();
+    gameTitleText = new GameText("Gem Madness");
     player = undefined;
     gem = undefined;
     allEnemies = [];
