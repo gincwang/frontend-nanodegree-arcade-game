@@ -120,7 +120,7 @@ Player.prototype.render = function() {
     //there won't be left-over image from before
     ctx.fillStyle = "white";
     ctx.fillRect(0,0,ctx.canvas.clientWidth, rowOffset);
-    console.log(ctx.canvas.clientWidth);
+
 
     for(i=0; i<this.lives; i++){
         ctx.drawImage(Resources.get(this.lifeSprite),colWidth*i,-30);
@@ -144,6 +144,12 @@ Player.prototype.handleInput = function(kb) {
                 enemy.stopWaiting();
                 player.isHit = false;
             })
+
+            //if player health is already 0, re-initialize the game to menu
+            if(this.lives === 0){
+                gameState = "menu";
+                gameReset();
+            }
         }
 
     }
@@ -217,9 +223,20 @@ Gem.prototype.update = function(){
 var GameText = function(text){
 
     this.text = text;
-    this.x = -colWidth*6;
-    this.y = rowOffset+rowHeight*5;
-    this.velocity = 0;
+    if(text === "Player Hit!"){
+        this.x = -colWidth*6;
+        this.y = rowOffset+rowHeight*5;
+        this.velocity = 0;
+    }else if(text === "Game Over"){
+        this.x = colWidth-20;
+        this.y = - rowOffset - rowHeight;
+        this.velocity = 0;
+
+    }else {
+        this.x = 0;
+        this.y = 0;
+        this.velocity =0;
+    }
 
 }
 
@@ -234,14 +251,28 @@ GameText.prototype.render = function(){
         ctx.strokeText(this.text, this.x , this.y );
         ctx.restore();
     }else if(this.text === "Game Over"){
-        console.log("game over");
+        ctx.save();
+        ctx.font = "75px serif";
+        ctx.fillStyle = "red";
+        ctx.fillText(this.text, this.x , this.y );
+        ctx.strokeStyle = "red";
+        ctx.strokeText(this.text, this.x , this.y );
+        ctx.restore();
+        console.log("gg text: "+ this.x + " and " + this.y)
     }
 }
 
 GameText.prototype.update = function(dt){
-    this.x += dt*this.velocity;
-    if(this.x >= colWidth*5 && this.y >= rowOffset+ rowHeight*5){
-        this.reset();
+    if(this.text === "Player Hit!"){
+        this.x += dt*this.velocity;
+        if(this.x >= colWidth*5 && this.y >= rowOffset+ rowHeight*5){
+            this.reset();
+        }
+    }else if(this.text === "Game Over"){
+        this.y += dt*this.velocity;
+        if(this.y >= rowOffset + rowHeight*3){
+            this.velocity = 0;
+        }
     }
 }
 
@@ -298,6 +329,7 @@ MenuSelector.prototype.handleInput = function(kb){
         player = new Player(Math.floor(this.x/colWidth));
         gem = new Gem();
         hitText = new GameText("Player Hit!");
+        gameOverText = new GameText("Game Over");
         allEnemies = [];
         for(var i=0; i<numOfEnemies; i++){
             allEnemies.push(new Enemy());
@@ -315,6 +347,7 @@ var player;
 var gem;
 var allEnemies = [];
 var hitText;
+var gameOverText;
 
 
 
@@ -337,9 +370,12 @@ document.addEventListener('keyup', function(e) {
 
     if(gameState === "menu"){
         menuSelector.handleInput(allowedKeys[e.keyCode]);
-    }
-    if(gameState === "start"){
+    }else if(gameState === "start"){
         player.handleInput(allowedKeys[e.keyCode]);
+    }else if(gameState === "end"){
+        if(allowedKeys[e.keyCode] === "space"){
+            gameState = "menu";
+        }
     }
 });
 
@@ -365,14 +401,16 @@ function checkCollisions(){
             //check if player's width margin is within enemy's width margin
             if((playerWidthMin > enemyWidthMin && playerWidthMin < enemyWidthMax) ||
                 (playerWidthMax > enemyWidthMin && playerWidthMax < enemyWidthMax)){
-                    //collision found! Drop user back to the bottom row
+                    //collision found! Drop user back to the starting location
                     if(!player.isHit){
                             player.isHit = true;
                             hitText.begin();
                             isHit = true;
                             player.reset();
                             player.lives--;
-                            console.log("player lives left: " + player.lives);
+                            if(player.lives === 0){
+                                gameOverText.begin();
+                            }
                         }
                 }
         }
@@ -413,4 +451,19 @@ function updateGameStats(){
             allEnemies.push(new Enemy());
         }
     }
+}
+
+
+function gameReset(){
+    menuSelector = new MenuSelector();
+    player = undefined;
+    gem = undefined;
+    allEnemies = [];
+    hitText = undefined;
+    gameOverText = undefined;
+    enemySpeedMultiplier = 30;
+    textSpeed = 400;
+    numOfEnemies = 3;
+    gemScore = 0;
+
 }
