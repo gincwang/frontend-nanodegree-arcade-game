@@ -264,9 +264,9 @@ var Engine = (function(global) {
         'images/char-horn-girl.png',
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
-        'images/Gem Blue.png',
-        'images/Gem Green.png',
-        'images/Gem Orange.png',
+        'images/Gem%20Blue.png',
+        'images/Gem%20Green.png',
+        'images/Gem%20Orange.png',
         'images/Selector.png',
         'images/Heart.png'
     ]);
