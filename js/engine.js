@@ -14,6 +14,14 @@
  * a little simpler to work with.
  */
 
+
+ /** Comments by Gin W:
+   * the game has been modified slightly to work -
+   * there are now 2 game scenes ( reset() and main() ) which will be rendered
+   * depending on the state of the game (var gameState).
+   *
+ */
+
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -26,7 +34,7 @@ var Engine = (function(global) {
         lastTime;
 
 
-    doc.getElementById('score').textContent = "Score: 0";
+    doc.getElementById('score').textContent = "Score: 0";       //Adds the score element for display
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
@@ -70,13 +78,11 @@ var Engine = (function(global) {
          }
     };
 
-    /* This function does some initial setup that should only occur once,
-     * particularly setting the lastTime variable that is required for the
-     * game loop.
+    /* @desc game is initialized to the menu scene
+     *
      */
     function init() {
         reset();
-
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -92,11 +98,12 @@ var Engine = (function(global) {
         if(gameState === "start"){
             updateEntities(dt);
             if(checkCollisions()){
-                console.log("hit!");
+                //Player is hit by enemy!
+                console.log("Player hit!");
             }
             if(checkGemCollisions()){
                 //Player scored! trigger update to game score
-                console.log("Scored Gem!");
+                console.log("Player scored!");
                 doc.getElementById('score').textContent = "Score: " + gemScore;
             }
         }
@@ -183,22 +190,21 @@ var Engine = (function(global) {
         }
     }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
+    /* @desc this will render the menu scene
+     *
      */
     function reset() {
         // noop
         renderGameMenu();
         if(gameState === "menu"){
             win.requestAnimationFrame(reset);
-        }else if(gameState === "start"){
+        }else if(gameState === "start"){            //transition to game level scene
             lastTime = Date.now();
             win.requestAnimationFrame(main);
         }
     }
 
-
+    //draws the menu scene
     function renderGameMenu(){
         var rowImages = [
                 'images/water-block.png',   // Top row is water

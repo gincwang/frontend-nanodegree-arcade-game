@@ -9,10 +9,16 @@ var colWidth = 101,
     gameState = "menu"; //"menu", "start", "end";
 
 
-////////////////////////
-// Enemy class //////////////////////
-// Enemies our player must avoid ////
-/////////////////////////////////////
+/**
+  * @class Enemy Class
+  * @desc enemies will run cross the screen at different rows, in hopes of
+    * colliding with the player. Enemies will spawn at random rows with random
+    * velocity, and will be recycled once position is off screen. Once the player
+    * has been hit, enemies will not spawn again until all enemies are off screen,
+    * making sure that player won't be hit multiple times by enemies in the same
+    * row. Player has to press "space bar" to continue the game.
+  * Examples: enemy.reset(), enemy.waitOffScreen(), enemy.StopWaiting()
+*/
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -79,11 +85,12 @@ Enemy.prototype.stopWaiting = function() {
 }
 
 
-////////////////////////
-//// Player class ////////////////////////////////////////////////////
-//// you can control player by moving it across the canvas and ///////
-//// interact with the environment in various ways ///////////////////
-//////////////////////////////////////////////////////////////////////
+/**
+  * @class Player class
+  * @desc you can control player by moving it across the canvas and
+  * interact with the environment in various ways (collide with enemy/gem)
+  * @param index - int used to initialize player mascot image
+*/
 var Player = function(index) {
 
     var allChar = [
@@ -177,18 +184,20 @@ Player.prototype.reset = function(){
 
 }
 
-///////////////////
-//// Gem Class ///////////////////////////////////////////
-//// player can score Gems by walking on top of it ///////
-//////////////////////////////////////////////////////////
+/**
+  * @class Gem Class
+  * @desc increments game score when collided by player position
+*/
 var Gem = function(){
-
+    //Initialize gem to use 1 of 3 colors randomly
     var gemColors = ["Blue", "Green", "Orange"],
         tempX = Math.floor(Math.random()*5)*colWidth,
         tempY = Math.floor(Math.random()*5)*rowHeight + rowOffset;
+    /*
+      Make sure new gem doesn't spawn on top of player NOR spawn at
+      default player spawn point
+    */
 
-    //Make sure new gem doesn't spawn on top of player NOR spawn at
-    //default player spawn point
     while((tempX === player.getX() && tempY === player.getY()) ||
             (tempX === colWidth*2 && tempY === rowOffset + rowHeight*4)){
         tempX = Math.floor(Math.random()*5)*colWidth;
@@ -216,10 +225,11 @@ Gem.prototype.update = function(){
 
 }
 
-///////////////////////////
-//// GameText class /////////////////////////////////////////////////
-//// Shows various text across canvas with different animation //////
-/////////////////////////////////////////////////////////////////////
+/**
+  * @class GameText Class
+  * @desc shows various text across canvas with different animation
+  * @usage use GameText.begin() to start animating
+*/
 var GameText = function(text){
 
     this.text = text;
@@ -299,10 +309,11 @@ GameText.prototype.begin = function(){
 }
 
 
-/////////////////////////////
-//// MenuSelector class //////////////////////////////////////////////////////
-//MenuSelector displays the current selected playable character in the menu //
-//////////////////////////////////////////////////////////////////////////////
+/**
+  * @class MenuSelector class
+  * @desc MenuSelector allows the player to navigate "left" and "right" to choose
+    their playable character.
+*/
 var MenuSelector = function(){
 
     this.sprite = 'images/Selector.png';
@@ -365,11 +376,18 @@ var gameOverText;
 
 
 
-///////Additional helper functions /////////
+/**
+  *Additional helper functions
+*/
 
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+
+/**
+  * @desc listens for key presses and sends the keys to various listeners
+     depending on gameState
+    @param e - triggered keyboard press 'keyup'
+    @return <none>
+*/
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         13: 'enter',
@@ -391,9 +409,12 @@ document.addEventListener('keyup', function(e) {
     }
 });
 
-//This function is called after Enemy and Player have updated their positions
-//called within Player.prototype.update()
-//Checks player radius vs Enemy radius for any overlap
+
+/**
+  * @desc checks player radius vs Enemy radius for any overlap, return true if overlapped(true)
+    @param <none>
+    @return bool - player hit true/false
+*/
 function checkCollisions(){
     var enemyWidthMin,
         enemyWidthMax,
@@ -404,8 +425,8 @@ function checkCollisions(){
 
     allEnemies.forEach(function(enemy){
 
-        //check if enemy&player are in the same row
-        if(enemy.getY() === player.getY()){
+
+        if(enemy.getY() === player.getY()){  //check if enemy&player are in the same row
             enemyWidthMin = enemy.getX() - colWidth/3,
             enemyWidthMax = enemy.getX() + colWidth/3,
             playerWidthMin = player.getX() - colWidth/3,
@@ -430,7 +451,11 @@ function checkCollisions(){
     return isHit;
 }
 
-//This function will let Player score gem points when colliding with it
+/**
+  * @desc let Player score gem points when colliding with it
+    @param <none>
+    @return bool - gem hit true/false
+*/
 function checkGemCollisions(){
     var isHit = false;
     if(gem.getY() === player.getY() && gem.getX() === player.getX()){
@@ -441,8 +466,13 @@ function checkGemCollisions(){
     return isHit;
 }
 
-//This function will increase game score, as well as adjust
-//game difficulty depending on the current score
+
+/**
+  * @desc increase game score, as well as adjust game difficulty
+     depending on the current score
+    @param <none>
+    @return <none>
+*/
 function updateGameStats(){
     gemScore++;
     console.log("points:"+ gemScore);
@@ -465,7 +495,12 @@ function updateGameStats(){
     }
 }
 
-
+/**
+  * @desc transition the gameState from "start" to "menu",
+    initializes gameplay variables
+    @param <none>
+    @return <none>
+*/
 function gameReset(){
     menuSelector = new MenuSelector();
     gameTitleText = new GameText("Gem Madness");
