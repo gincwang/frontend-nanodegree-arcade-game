@@ -58,7 +58,7 @@ Enemy.prototype.update = function(dt) {
 };
 
 // Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
+Enemy.prototype.render = function(ctx) {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -119,7 +119,7 @@ Player.prototype.update = function(dt) {
     //hmmmm..
 };
 
-Player.prototype.render = function() {
+Player.prototype.render = function(ctx) {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
     //draw a filler white rect, since there's some empty spot at the
@@ -217,7 +217,7 @@ var Gem = function(){
 
 };
 
-Gem.prototype.render = function(){
+Gem.prototype.render = function(ctx){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -255,7 +255,7 @@ var GameText = function(text){
 
 };
 
-GameText.prototype.render = function(){
+GameText.prototype.render = function(ctx){
     if(this.text === "Player Hit!"){
         ctx.save();
         ctx.rotate(-Math.PI/6);
@@ -327,7 +327,7 @@ var MenuSelector = function(){
 
 };
 
-MenuSelector.prototype.render = function(){
+MenuSelector.prototype.render = function(ctx){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 

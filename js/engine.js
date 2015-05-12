@@ -9,9 +9,6 @@
  * drawn but that is not the case. What's really happening is the entire "scene"
  * is being drawn over and over, presenting the illusion of animation.
  *
- * This engine is available globally via the Engine variable and it also makes
- * the canvas' context (ctx) object globally available to make writing app.js
- * a little simpler to work with.
  */
 
 
@@ -167,26 +164,26 @@ var Engine = (function(global) {
         }
 
 
-        renderEntities();
+        renderEntities(ctx);
     }
 
     /* This function is called by the render function and is called on each game
      * tick. It's purpose is to then call the render functions you have defined
      * on your enemy and player entities within app.js
      */
-    function renderEntities() {
+    function renderEntities(ctx) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
         if(gameState === "start"){
-            gem.render();
+            gem.render(ctx);
             allEnemies.forEach(function(enemy) {
-                enemy.render();
+                enemy.render(ctx);
             });
 
-            player.render();
-            hitText.render();
-            gameOverText.render();
+            player.render(ctx);
+            hitText.render(ctx);
+            gameOverText.render(ctx);
         }
     }
 
@@ -231,14 +228,14 @@ var Engine = (function(global) {
             }
         }
 
-        renderMenuEntities();
+        renderMenuEntities(ctx);
 
     }
 
-    function renderMenuEntities(){
-        menuSelector.render();
-        renderAllCharacters();
-        gameTitleText.render();
+    function renderMenuEntities(ctx){
+        menuSelector.render(ctx);
+        renderAllCharacters(ctx);
+        gameTitleText.render(ctx);
     }
     //this function prints out all the playable characters
     function renderAllCharacters(){
@@ -279,5 +276,5 @@ var Engine = (function(global) {
      * object when run in a browser) so that developer's can use it more easily
      * from within their app.js files.
      */
-    global.ctx = ctx;
+    //global.ctx = ctx;
 })(this);
