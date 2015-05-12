@@ -76,7 +76,7 @@ var Engine = (function(global) {
          }else {
              win.requestAnimationFrame(main);
          }
-    };
+    }
 
     /* @desc game is initialized to the menu scene
      *
@@ -250,7 +250,7 @@ var Engine = (function(global) {
             'images/char-princess-girl.png',
         ];
         for(col = 0; col < allChar.length; col++){
-            ctx.drawImage(Resources.get(allChar[col]), col*colWidth, rowOffset+rowHeight*4 );
+            ctx.drawImage(Resources.get(allChar[col]), col*COL_WIDTH, ROW_OFFSET + ROW_HEIGHT*4 );
         }
     }
     /* Go ahead and load all of the images we know we're going to need to
