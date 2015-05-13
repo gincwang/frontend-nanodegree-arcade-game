@@ -1,3 +1,5 @@
+//"use strict"
+
 //Game variables
 var COL_WIDTH = 101,
     ROW_HEIGHT = 85,
@@ -115,10 +117,6 @@ var Player = function(index) {
 };
 
 
-Player.prototype.update = function(dt) {
-    //hmmmm..
-};
-
 Player.prototype.render = function(ctx) {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
@@ -129,7 +127,7 @@ Player.prototype.render = function(ctx) {
     ctx.fillRect(0,0,ctx.canvas.clientWidth, ROW_OFFSET);
 
 
-    for(i=0; i<this.lives; i++){
+    for(var i=0; i<this.lives; i++){
         ctx.drawImage(Resources.get(this.lifeSprite),COL_WIDTH*i,-30);
     }
 };
@@ -164,8 +162,14 @@ Player.prototype.handleInput = function(kb) {
             //once the player is hit we don't let the player move
             if(!player.isHit){
 
-                if (kb === 'up' && this.y > ROW_OFFSET)
-                { this.y -= ROW_HEIGHT;}
+                if (kb === 'up'){
+                    if (this.y > ROW_OFFSET){
+                        this.y -= ROW_HEIGHT;
+                    }
+                    else {
+                        this.y = ROW_OFFSET + ROW_HEIGHT*4;
+                    }
+                }
                 else if(kb === 'down' && this.y < ROW_OFFSET + ROW_HEIGHT*4)
                 { this.y += ROW_HEIGHT;}
                 else if(kb === 'left' && this.x > 0)
