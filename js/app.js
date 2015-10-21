@@ -144,7 +144,7 @@ Player.prototype.handleInput = function(kb) {
             isEnemyWaiting++;
     });
     if(isEnemyWaiting === allEnemies.length){
-        if (kb === 'space'){
+        if (kb === 'space' || kb === 'enter'){
             allEnemies.forEach(function(enemy){
                 enemy.stopWaiting();
                 player.isHit = false;
@@ -350,7 +350,7 @@ MenuSelector.prototype.handleInput = function(kb){
             this.x += COL_WIDTH;
         }
     }//Initialize main game level objects
-    else if(kb === "space"){
+    else if(kb === "space" || kb === "enter"){
         gameState = "start";
         //objects
         player = new Player(Math.floor(this.x/COL_WIDTH));
@@ -401,13 +401,14 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
+    var key = allowedKeys[e.keyCode];
 
     if(gameState === "menu"){
-        menuSelector.handleInput(allowedKeys[e.keyCode]);
+        menuSelector.handleInput(key);
     }else if(gameState === "start"){
-        player.handleInput(allowedKeys[e.keyCode]);
+        player.handleInput(key);
     }else if(gameState === "end"){
-        if(allowedKeys[e.keyCode] === "space"){
+        if(key === "space" || key === "enter"){
             gameState = "menu";
         }
     }
