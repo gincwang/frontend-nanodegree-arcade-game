@@ -123,12 +123,12 @@ Player.prototype.render = function(ctx) {
     //draw a filler white rect, since there's some empty spot at the
     //top of the canvas, so when heart is no longer drawn
     //there won't be left-over image from before
-    ctx.fillStyle = "white";
-    ctx.fillRect(0,0,ctx.canvas.clientWidth, ROW_OFFSET);
+    ctx.fillStyle = "#82CAFA";
+    ctx.fillRect(0,0,ctx.canvas.clientWidth, ROW_OFFSET+3);
 
 
     for(var i=0; i<this.lives; i++){
-        ctx.drawImage(Resources.get(this.lifeSprite),COL_WIDTH*i,-30);
+        ctx.drawImage(Resources.get(this.lifeSprite),COL_WIDTH*i,-52);
     }
 };
 
@@ -340,7 +340,6 @@ MenuSelector.prototype.update = function(){
 };
 
 MenuSelector.prototype.handleInput = function(kb){
-    console.log(kb);
     if(kb === "left"){
         if(this.x >= COL_WIDTH){
             this.x -= COL_WIDTH;
@@ -392,7 +391,7 @@ var gameOverText;
     @param e - triggered keyboard press 'keyup'
     @return <none>
 */
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keydown', function(e) {
     var allowedKeys = {
         13: 'enter',
         32: 'space',
@@ -402,16 +401,21 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
     var key = allowedKeys[e.keyCode];
-
-    if(gameState === "menu"){
-        menuSelector.handleInput(key);
-    }else if(gameState === "start"){
-        player.handleInput(key);
-    }else if(gameState === "end"){
-        if(key === "space" || key === "enter"){
-            gameState = "menu";
+    if(key !== undefined){
+        //prevent default action so window doesn't scroll when it's small, which
+        //distracts user from playing the game
+        e.preventDefault();
+        if(gameState === "menu"){
+            menuSelector.handleInput(key);
+        }else if(gameState === "start"){
+            player.handleInput(key);
+        }else if(gameState === "end"){
+            if(key === "space" || key === "enter"){
+                gameState = "menu";
+            }
         }
     }
+
 });
 
 

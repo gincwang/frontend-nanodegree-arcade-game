@@ -34,7 +34,7 @@ var Engine = (function(global) {
     doc.getElementById('score').textContent = "Score: 0";       //Adds the score element for display
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+    doc.getElementById('gameCanvas').appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
