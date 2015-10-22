@@ -5,7 +5,8 @@ var COL_WIDTH = 101,
     ROW_HEIGHT = 85,
     ROW_OFFSET = 50,
     TEXTSPEED = 400,
-    enemySpeedMultiplier = 30,
+    ENEMY_SPEED_DEFAULT = 30,
+    enemySpeedMultiplier = ENEMY_SPEED_DEFAULT,
     numOfEnemies = 3,
     gemScore = 0,
     gameState = "menu"; //"menu", "start", "end";
@@ -14,11 +15,11 @@ var COL_WIDTH = 101,
 var highScoreData = {
     "scores" : [
         {
-            name: "Bob",
+            name: "Abe",
             score: 5
         },
         {
-            name: "Sam",
+            name: "Bob",
             score: 3
         },
         {
@@ -30,8 +31,8 @@ var highScoreData = {
             score: 1
         },
         {
-            name: "Tom",
-            score: 1
+            name: "Bob",
+            score: 0
         }
     ]
 };
@@ -187,7 +188,6 @@ Player.prototype.handleInput = function(kb) {
             //if player health is already 0, re-initialize the game to menu
             if(this.lives === 0){
                 gameState = "menu";
-                gameReset();
             }
         }
 
@@ -568,7 +568,7 @@ function gameReset(){
     allEnemies = [];
     hitText = undefined;
     gameOverText = undefined;
-    enemySpeedMultiplier = 30;
+    enemySpeedMultiplier = ENEMY_SPEED_DEFAULT;
     TEXTSPEED = 400;
     numOfEnemies = 3;
     gemScore = 0;
