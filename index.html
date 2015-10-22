@@ -4,23 +4,29 @@
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 </head>
 <body>
     <div class="info">
         <h1 id="score">Score: 0</h1>
-        <h3 id="instruction">How to play:
+        <h3 class="instruction">How to play:
             <ul>
-                <li>Use <strong>"Space Bar/Enter"</strong> keys for navigation</li>
-                <li>Use <strong>"Directional keys"</strong> to control your character</li>
+                <li>Use "Space Bar/Enter" keys for navigation</li>
+                <li>Use "Directional keys" to control your character</li>
             </ul>
+        </h3>
+        <h3 class="instruction">
             Game Rules:
             <ul>
                 <li>You start with 3 hearts (HP)</li>
                 <li>Getting hit by ladybug will cost you 1 heart</li>
                 <li>Walk over the gem to collect your gem point</li>
                 <li>The game will end once you run out of hearts (HP)</li>
-                <li>Collect as many gems as you can to get your high score! Good Luck!!</h3></li>
+                <li>Collect as many gems as you can to get your high score! Good Luck!!</li>
             </ul>
+        </h3>
+    </div>
+    <div id="gameCanvas">
     </div>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
