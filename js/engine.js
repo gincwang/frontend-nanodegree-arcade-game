@@ -17,6 +17,8 @@
    * there are now 2 game scenes ( reset() and main() ) which will be rendered
    * depending on the state of the game (var gameState).
    *
+   *localStorage is used to store player high score data
+   *assumes "highScoreData" exists to load data from
  */
 
 var Engine = (function(global) {
@@ -66,14 +68,17 @@ var Engine = (function(global) {
         if(gameState === "menu"){
             //This means player has run out of lives, and the game will
             //reload the menu scene
-             gameReset();
-             doc.getElementById('score').textContent = "Score: " + gemScore;
-             var playerName = doc.getElementById('player-name').textContent;
-             //renderHighScore(playerName, gemScore);
-             win.requestAnimationFrame(reset);
-         }else {
-             win.requestAnimationFrame(main);
-         }
+            console.log("gem score:" + gemScore);
+            var playerName = doc.getElementById('player-name').value;
+            insertScore(playerName, gemScore);
+            renderHighScore();
+            gameReset();
+            doc.getElementById('score').textContent = "Score: " + gemScore;
+
+            win.requestAnimationFrame(reset);
+        }else {
+            win.requestAnimationFrame(main);
+        }
     }
 
     /* @desc game is initialized to the menu scene
@@ -81,6 +86,7 @@ var Engine = (function(global) {
      */
     function init() {
         reset();
+        loadScore();
         renderHighScore();
     }
 
@@ -258,6 +264,35 @@ var Engine = (function(global) {
         var tableRows = Mustache.to_html(template, highScoreData);
         doc.getElementById('high-score').innerHTML = tableRows;
         console.log(tableRows);
+    }
+
+    function loadScore(){
+        //populate our local data if localStorage scores exist
+        if(localStorage["scores"]){
+            var scores = JSON.parse(localStorage["scores"]);
+            highScoreData = scores;
+        }else {
+        //save default dummy high score data into localStorage
+            localStorage["scores"] = JSON.stringify(highScoreData);
+        }
+    }
+
+    function saveScores(){
+        localStorage["scores"] = JSON.stringify(highScoreData);
+    }
+
+    function insertScore(name, score){
+        var scores = highScoreData.scores;
+        for(var i=0; i < scores.length; i++){
+            if(score >= scores[i].score){
+                scores.splice(i, 0, {name: name, score: score});
+                if(scores.length > 10){
+                    scores.splice(scores.length-1, 1);
+                }
+                saveScores();
+                break;
+            }
+        }
     }
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
