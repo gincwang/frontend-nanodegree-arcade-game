@@ -34,15 +34,25 @@
         </div>
     </div>
     <div class="scores"><h3>Player Name
-        <input type="text" name="player-name" class="player-name"></h3>
+        <input type="text" name="player-name" id="player-name"></h3>
         <h1>High Scores</h1>
-        <table class="high-score">
-            <tr>
-                <th>Name</th>
-                <th>Score</th>
-            </tr>
+        <table id="high-score">
         </table>
     </div>
+    <!--table template-->
+    <script id="score-template" type="text/template">
+        <tr>
+            <th>Name</th>
+            <th>Score</th>
+        </tr>
+        {{#scores}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{score}}</td>
+            </tr>
+        {{/scores}}
+    </script>
+    <script src="node_modules/mustache/mustache.min.js"></script>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>

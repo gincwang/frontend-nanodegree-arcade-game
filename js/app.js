@@ -10,6 +10,31 @@ var COL_WIDTH = 101,
     gemScore = 0,
     gameState = "menu"; //"menu", "start", "end";
 
+//initial dummy score data
+var highScoreData = {
+    "scores" : [
+        {
+            name: "Bob",
+            score: 5
+        },
+        {
+            name: "Sam",
+            score: 3
+        },
+        {
+            name: "Abe",
+            score: 2
+        },
+        {
+            name: "Kat",
+            score: 1
+        },
+        {
+            name: "Tom",
+            score: 1
+        }
+    ]
+};
 
 /**
   * @class Enemy Class
@@ -387,6 +412,7 @@ MenuSelector.prototype.handleInput = function(kb){
     }
 
 };
+
 
 
 // Instantiate game object by going into menu first!

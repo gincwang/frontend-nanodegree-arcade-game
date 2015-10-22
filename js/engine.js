@@ -30,7 +30,6 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-
     doc.getElementById('score').textContent = "Score: 0";       //Adds the score element for display
     canvas.width = 505;
     canvas.height = 585;
@@ -69,6 +68,8 @@ var Engine = (function(global) {
             //reload the menu scene
              gameReset();
              doc.getElementById('score').textContent = "Score: " + gemScore;
+             var playerName = doc.getElementById('player-name').textContent;
+             //renderHighScore(playerName, gemScore);
              win.requestAnimationFrame(reset);
          }else {
              win.requestAnimationFrame(main);
@@ -80,6 +81,7 @@ var Engine = (function(global) {
      */
     function init() {
         reset();
+        renderHighScore();
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -248,6 +250,14 @@ var Engine = (function(global) {
         for(col = 0; col < allChar.length; col++){
             ctx.drawImage(Resources.get(allChar[col]), col*COL_WIDTH, ROW_OFFSET + ROW_HEIGHT*4 );
         }
+    }
+
+    function renderHighScore(){
+        console.log(highScoreData);
+        var template = doc.getElementById('score-template').innerHTML;
+        var tableRows = Mustache.to_html(template, highScoreData);
+        doc.getElementById('high-score').innerHTML = tableRows;
+        console.log(tableRows);
     }
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
