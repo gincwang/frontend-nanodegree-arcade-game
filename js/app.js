@@ -120,16 +120,25 @@ var Player = function(index) {
 Player.prototype.render = function(ctx) {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
-    //draw a filler white rect, since there's some empty spot at the
+    //draw a filler rect, since there's some empty spot at the
     //top of the canvas, so when heart is no longer drawn
     //there won't be left-over image from before
     ctx.fillStyle = "#82CAFA";
     ctx.fillRect(0,0,ctx.canvas.clientWidth, ROW_OFFSET+3);
 
-
+    //draw player HP
     for(var i=0; i<this.lives; i++){
         ctx.drawImage(Resources.get(this.lifeSprite),COL_WIDTH*i,-52);
     }
+
+    //draw transparent rect when player is hit and has to wait for ladybugs to clear screen
+    if(this.isHit){
+        ctx.fillStyle = "#726E6D";
+        ctx.globalAlpha = 0.5;
+        ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height);
+        ctx.globalAlpha = 1.0;
+    }
+
 };
 
 Player.prototype.handleInput = function(kb) {
