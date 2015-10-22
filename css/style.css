@@ -1,3 +1,44 @@
 body {
+    background-color: #82CAFA;
     text-align: center;
+    display: flex;
+    flex-wrap: row wrap;
+    justify-content: center;
+}
+
+.info {
+    width: 485px;
+    padding: 20px;
+    align-self: center;
+    text-align: left;
+}
+
+#score {
+    display: inline-block;
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 5px 20px;
+    color: #E56717;
+}
+
+@media (max-width: 1010px) {
+    body {
+        display: block;
+    }
+
+    .info {
+        width: 100%;
+    }
+
+    #instruction {
+        order: 3;
+    }
+
+    #score {
+        order: 1;
+    }
+
+    canvas {
+        order: 2;
+    }
 }
