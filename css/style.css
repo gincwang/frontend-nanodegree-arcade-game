@@ -5,11 +5,11 @@ body {
     flex-wrap: row wrap;
     justify-content: center;
     font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .info-instruction {
-    width: 505px;
+    width: 30%;
     padding: 20px 30px;
     align-self: center;
     text-align: left;
@@ -41,8 +41,26 @@ body {
     padding: 5px 20px;
     color: #E56717;
     text-align: center;
-    width: 50%;
-    margin: auto;
+    width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.scores {
+    margin: 20px;
+}
+
+.high-score {
+    width: 25%;
+    margin:auto;
+}
+
+.player-name {
+    padding: 5px;
+    font-size: 13px;
+    text-align: center;
 }
 
 @media (max-width: 980px) {
@@ -50,4 +68,7 @@ body {
         flex-direction: column;
     }
 
+    .info-instruction {
+        width: 85%;
+    }
 }
