@@ -170,12 +170,27 @@ Player.prototype.handleInput = function(kb) {
                         this.y = ROW_OFFSET + ROW_HEIGHT*4;
                     }
                 }
-                else if(kb === 'down' && this.y < ROW_OFFSET + ROW_HEIGHT*4)
-                { this.y += ROW_HEIGHT;}
-                else if(kb === 'left' && this.x > 0)
-                { this.x -= COL_WIDTH;}
-                else if(kb === 'right' && this.x < COL_WIDTH*4)
-                { this.x += COL_WIDTH;}
+                else if(kb === 'down'){
+                    if(this.y < ROW_OFFSET + ROW_HEIGHT*4){
+                        this.y += ROW_HEIGHT;
+                    }else {
+                        this.y = ROW_OFFSET;
+                    }
+                }
+                else if(kb === 'left'){
+                    if(this.x > 0){
+                        this.x -= COL_WIDTH;
+                    }else {
+                        this.x = COL_WIDTH*4;
+                    }
+                }
+                else if(kb === 'right'){
+                    if(this.x < COL_WIDTH*4){
+                        this.x += COL_WIDTH;
+                    }else {
+                        this.x = 0;
+                    }
+                }
                 //console.log(this.x, this.y);
             }
         }
