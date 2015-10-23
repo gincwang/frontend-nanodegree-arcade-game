@@ -52,14 +52,32 @@ body {
     margin: 20px;
 }
 
-.high-score {
-    width: 25%;
+#high-score {
+    width: 85%;
     margin:auto;
 }
 
-.player-name {
+table, th, td {
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    padding: 5px;
+    background-color: #AF7817;
+    color: white;
+}
+
+tr {
+    background-color: #FBB917;
+}
+
+#player-name {
     padding: 3px;
-    font-size: 20px;
+    font-size: 15px;
     text-align: center;
     border-radius: 7px;
 }
@@ -71,5 +89,10 @@ body {
 
     .info-instruction {
         width: 85%;
+    }
+
+    #high-score {
+        width: 50%;
+        margin:auto;
     }
 }
