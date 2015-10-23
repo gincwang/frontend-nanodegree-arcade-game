@@ -11,7 +11,7 @@ Menu Selection
 
 Gem Madness begins by showing you a list of playable character. You can use your
 directional keys: '<-' and '->' to navigate, and once you've settled on your
-favorite character, press 'space bar' to start the game!
+favorite character, press 'space bar/enter' to start the game!
 
 How To Play
 -----------
@@ -42,7 +42,7 @@ You have the ability to navigate the game level with your directional keys:
 
 #When you run out of life points
     - game over :(
-    - press "space bar" will take you back to the menu selection, where you can
+    - press "space bar/enter" will take you back to the menu selection, where you can
       initialize another Gem Madness game!
 
 Good Luck and Have Fun!!
