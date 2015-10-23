@@ -68,7 +68,6 @@ var Engine = (function(global) {
         if(gameState === "menu"){
             //This means player has run out of lives, and the game will
             //reload the menu scene
-            console.log("gem score:" + gemScore);
             var playerName = doc.getElementById('player-name').value;
             insertScore(playerName, gemScore);
             renderHighScore();
@@ -259,11 +258,9 @@ var Engine = (function(global) {
     }
 
     function renderHighScore(){
-        console.log(highScoreData);
         var template = doc.getElementById('score-template').innerHTML;
         var tableRows = Mustache.to_html(template, highScoreData);
         doc.getElementById('high-score').innerHTML = tableRows;
-        console.log(tableRows);
     }
 
     function loadScore(){
