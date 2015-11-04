@@ -6,6 +6,9 @@ Instead of scoring by crossing the road and reaching the river, the player has t
 score through collecting gems that will spawn all over the road, while avoiding
 the ever-busier traffic of the in-coming ladybugs.
 
+Play this game at:
+http://gincwang.github.io/frontend-nanodegree-arcade-game
+
 ##Menu Selection
 -----------------
 
@@ -51,13 +54,10 @@ You have the ability to navigate the game level with your directional keys:
 Good Luck and Have Fun!!
 
 
-p.s. my personal best score is 22.
-
-Play this game at:
-http://gincwang.github.io/frontend-nanodegree-arcade-game
+p.s. my personal best score is 32.
 
 ================================================================================
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
+Students should use this rubric: https://www.udacity.com/course/viewer#!/c-nd001/l-2696458597/m-2687128535
 
 for self-checking their submission.
