@@ -9,6 +9,8 @@ the ever-busier traffic of the in-coming ladybugs.
 Play this game at:
 http://gincwang.github.io/frontend-nanodegree-arcade-game
 
+Concepts explored in this game: Object Oriented Design, game loop, HTML Canvas, persistent data through localStorage
+
 ##Menu Selection
 -----------------
 
